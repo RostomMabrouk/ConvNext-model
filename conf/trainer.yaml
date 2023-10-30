@@ -1,0 +1,85 @@
+# YAML usage: 
+# - null for None
+# - invalid expression: 1e-5 || valid expression: 1.0e-5
+
+environment:
+    azureml : False # set to True to run the experiment in azureml
+    exp_name : ndc_detection
+    cluster_name : name-cluster
+    azure_config_path : conf/config.json
+    vm_size : STANDARD_D4AS_V4
+    docker_base_img : mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+    register_model: True
+    model_version: 0.1
+    
+
+data:
+  skip_azure : True # Skip downloading from azure data
+  create_dataset : True
+  upload_azure: False
+  container_name : names
+  container_results_path : results/pytorch/exported_model 
+  base_path_img : ""
+  local_dir_img :  data/ndc-data
+  dataset_dir : data/ndc-name
+  train_split : 0.64 # Training
+  val_split : 0.16 # Validation
+  test_split : 0.2  # Holdout
+  verbose : False
+  eval_path : data/ndc-name/holdout
+
+
+train :
+    type: all # logits or triplet or all
+    # dataset: data
+    num_workers: 1
+    device: gpu
+    finetune: null 
+    
+
+evaluation : 
+    exp_name: null
+    # dataset:ndc-set5-holdout
+    num_workers: 1
+    device: gpu
+    neighbours: 11
+    batch_size: 1
+    save_path: 
+
+logits :
+    weighted_loss: False
+    # weighted_loss: [1.0, 1.8]
+    weighted_sampling : False
+    model: resnet18
+    freeze_layer: null
+    epochs: 2
+    augment_type: 1
+    input_size: (224, 224)
+    batch_size: 2
+    pretrained: True
+    opt: adam
+    lr: 4.0e-4 #1e-5
+    weight_decay: 0.05
+    weight_decay_end: null
+    layer_decay: 1.0
+    update_freq: 1
+    min_lr: 1.0e-6
+    warmup_epochs: 0
+    warmup_steps: -1
+    trainable_bias_and_bn_params: False
+    log_every_iter : 10
+
+triplet:
+    model: resnet18
+    loss_margin: 0.6
+    lr: 1e-5
+    epochs: 3
+    freeze_layer: layer2
+    weight_decay: 1e-5
+    embedSize: 128
+    augment_type: 1 # Options: 0 1 2 2gray
+    input_size: (224, 224)
+    batch_size: 2
+    pretrained: True
+    weighted_sampling : True
+    log_every_iter : 10

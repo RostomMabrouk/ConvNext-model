@@ -1,0 +1,30 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.7.3
+- pip:
+  - azureml-defaults
+  - azureml-sdk
+  - azure-core==1.25.0
+  - azure-storage-blob==12.13.1
+  - numpy
+  - pandas
+  - Pillow
+  - sklearn
+  - openpyxl==3.0.10
+  - tqdm
+  - tensorboard
+  - numba==0.56.0
+  - torch==1.11.0
+  - torchvision==0.12.0
+  - absl-py==1.1.0
+  - albumentations==1.2.0
+  - ml_collections
+  - pyyaml
+  - tabulate
+  - termcolor
+  - timm==0.5.4
+  - matplotlib
+  - opencv-python-headless==4.6.0.66
+  - seaborn==0.11.2
+
